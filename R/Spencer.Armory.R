@@ -18,7 +18,6 @@ if(missing(tag1)==T & missing(tag2)==F){print("you can't input tag2 without tag1
 if((missing(tag1)==T|missing(tag2)==T) & missing(tag3)==F){print("you can't input tag3 without tag1 or tag2")}
 text.data=text_dataframe
 text.data$text=text_data
-if(missing(text_dataframe))
 #for mac
 #tag1=tag1[,-1];tag2=tag2[,-1];tag3=tag3[,-1];
 ####批量改变数据格式——as.character
