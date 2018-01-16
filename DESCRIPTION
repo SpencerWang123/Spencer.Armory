@@ -1,0 +1,11 @@
+Package: Spencer.armory
+Type: Package
+Title:Tagging,Word_segment,Sentiment_Analysis,SNA for BA 
+Version: 0.1.0
+Author: Spencer Wang
+Maintainer: Spencer Wang<810827408@qq.com>
+Description: Inside this package are many practical tools needed when we are faced with text_mining when doing BA,such as tagging,word segment,senti_analysis and SNA.etc.
+License: GPL-2
+Encoding: UTF-8
+LazyData: FALSE
+
