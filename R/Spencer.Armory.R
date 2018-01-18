@@ -218,6 +218,9 @@ text.data$tag3=gsub("^ +","",text.data$tag3)
 #输出文档
 tagged_data=as.data.frame(cbind(all_data,text.data$tag1,text.data$tag2,text.data$tag3))
 colnames(tagged_data)=c(colnames(all_data),"一级标签","二级标签","三级标签")
+write.csv(tagged_data,"tagged_data.csv")
+warning("汪！我占领了这篇文档的所有电线杆！三级标签均已打完，打好的标签文档tagged_data已经写入你的工作空间啦！快去看文件")
+
 }
 }
 
