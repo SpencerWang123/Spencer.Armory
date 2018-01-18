@@ -25,7 +25,7 @@ tag1=tag_level1
 #for mac
 #tag1=tag1[,-1];tag2=tag2[,-1];tag3=tag3[,-1];
 ####批量改变数据格式——as.character
-text=as.character(text.data$temp_vice)#$后面填写文本字段名
+text=as.character(all_data_text)#$后面填写文本字段名
 text.data$text=all_data_text
 for(i in 1:ncol(tag1)){tag1[,i]=as.character(tag1[,i])}
 
