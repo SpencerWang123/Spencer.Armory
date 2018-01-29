@@ -255,3 +255,70 @@ rm(temp_tag)
 rm(text)
 }
 ###
+
+
+
+spider_also_speaker=function(text_vector,nonscence_word)
+{
+#preparation
+library(jiebaRD);library(jiebaR)
+matchstick=worker("tag")
+set_fire_on_cigar=function(x){segment(x,matchstick,mod = "mix")}
+noscence_word=as.character(nonscence_word)
+text_vector=as.character(text_vector)
+#segment
+wcof_data=lapply(text_vector,set_fire_on_cigar)
+text_relation=wcof_data
+#words
+fenci_all=unlist(wcof_data);
+fenci_unique0=unique(fenci_all[names(fenci_all)=="n"|names(fenci_all)=="a"|names(fenci_all)=="v"])
+fenci_unique=fenci_unique0[(fenci_unique0 %in% noscence_word)==FALSE]
+#matrix
+a=rep(0,length(fenci_unique)^2)
+data_matrix=matrix(a,nrow =length(fenci_unique),ncol = length(fenci_unique))
+colnames(data_matrix)=fenci_unique
+rownames(data_matrix)=fenci_unique
+#work!
+for(i in 1:length(text_relation))
+{
+  temp_sentence_fenci=text_relation[[i]]
+  temp_words=temp_sentence_fenci[temp_sentence_fenci %in% fenci_unique]
+  if(length(temp_words>0))
+  {
+    for(x in 1:length(temp_words))
+    {
+      for(y in 1:length(temp_words))#####确定是单向还是双向的操作区域
+      {
+        data_matrix[temp_words[x],temp_words[y]]=data_matrix[temp_words[x],temp_words[y]]+1
+      }
+    }
+  }
+  print(paste(i,"/",length(text_relation)))
+}
+print("请稍等，写入文件中……——the little poor creature is weaving the words")
+for(i in 1:ncol(data_matrix)){data_matrix[i,i]=0}
+#form relation data.frame
+source=rep(fenci_unique,length(fenci_unique))
+target=c(0);for(i in 1:length(fenci_unique)){target=c(target,rep(fenci_unique[i],length(fenci_unique)))};target=target[-1]
+b=as.vector(data_matrix)
+weight=b
+empty_df=cbind(source,target,weight)
+empty_df[,3]=as.numeric(empty_df[,3])
+all_relation=as.data.frame(empty_df)
+#cof filter
+b=as.numeric(b)
+df_5=all_relation[b>5,]
+df_10=all_relation[b>10,]
+df_50=all_relation[b>50,]
+df_100=all_relation[b>100,]
+df_200=all_relation[b>200,]
+write.csv(df_5,"edge_data_cof5.csv")
+write.csv(df_10,"edge_data_cof10.csv")
+write.csv(df_50,"edge_data_cof50.csv")
+write.csv(df_100,"edge_data_cof100.csv")
+write.csv(df_200,"edge_data_cof200.csv")
+##
+node_data=as.data.frame(cbind(as.character(fenci_unique),as.character(fenci_unique)));colnames(node_data)=c("id","label")
+write.csv(node_data,"node_data.csv")
+print("词共现网络搭建完成并已写出，网络数据见工作空间")
+}
